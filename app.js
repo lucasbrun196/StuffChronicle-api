@@ -6,10 +6,29 @@
     import path from 'path'
     import { fileURLToPath } from 'url';
     import mongoose from "mongoose";
+    import session from "express-session";
+    import flash from 'connect-flash';
     const app = express()
 
 
 //CONFIGURAÇÕES
+
+    //sessão
+        app.use(session({
+            secret: 'secret',
+            resave: true,
+            saveUninitialized: true
+        }))
+    
+    //flash
+        app.use(flash())
+    
+    //middleware
+        app.use((req, res, next) => {
+            res.locals.success_msg = req.flash('success_msg'),
+            res.locals.error_msg = req.flash('error_msg'),
+            next()
+        })
 
     //body-parser
         app.use(bodyParser.urlencoded({extended: false}))
