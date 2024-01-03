@@ -2,6 +2,7 @@
     import express from "express";
     import { engine } from 'express-handlebars';
     import bodyParser from 'body-parser';
+    import admin from './routes/admin.js';
     // import mongoose from "mongoose";
     const app = express()
 
@@ -28,9 +29,12 @@
     //outras configs
 
 //ROTAS
+    app.use('/admin', admin)
+
+
 
 //OUTROS
-const PORT = 8081
-app.listen(PORT, () => {
-    console.log('Servidor rodando')
-})
+    const PORT = 8081
+    app.listen(PORT, () => {
+        console.log('Servidor rodando')
+    })
