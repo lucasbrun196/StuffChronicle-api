@@ -22,15 +22,33 @@ router.get('/categorias/add', (req, res) => {
 })
 
 router.post('/categorias/nova', (req, res) => {
-    const NewCategory = {
-        nome: req.body.nome,
-        slug: req.body.slug
+
+    var errors = []
+
+    if(!req.body.nome || typeof req.body.nome == undefined || req.body.nome == null){
+        errors.push({text: 'Nome invalido'})
     }
-    new categoria(NewCategory).save().then(() => {
-        console.log('New category was created')
-    }).catch((e) => {
-        console.log('Error when created new category' + e)
-    })
+    if(!req.body.slug || typeof req.body.slug == undefined || req.body.slug == null){
+        errors.push({text: 'Slug invalido'})
+    }
+
+    if(errors.length > 0){
+        res.render('admin/addcategoria', {errors: errors})
+    }else{
+        const NewCategory = {
+            nome: req.body.nome,
+            slug: req.body.slug
+        }
+        new categoria(NewCategory).save().then(() => {
+            console.log('New category was created')
+            req.flash('success_msg', 'Categoria criada com sucesso')
+            res.redirect('/admin/categorias')
+        }).catch((e) => {
+            req.flash('error_msg', 'Erro ao criar a categoria')
+            res.redirect('/admin')
+            console.log('Error when created new category' + e)
+        })
+    }
 })
 
 
