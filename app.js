@@ -5,7 +5,7 @@
     import admin from './routes/admin.js';
     import path from 'path'
     import { fileURLToPath } from 'url';
-    // import mongoose from "mongoose";
+    import mongoose from "mongoose";
     const app = express()
 
 
@@ -27,6 +27,12 @@
         app.set('views', './views');
 
     //mongoose
+        mongoose.Promise = global.Promise
+        mongoose.connect('mongodb://localhost:27017/blogapp').then(() => {
+            console.log('Database was connected')
+        }).catch((e) => {
+            console.log('Error when connecting whit database' + e)
+        })
 
     //public
         const __filename = fileURLToPath(import.meta.url);
@@ -43,5 +49,5 @@
 //OUTROS
     const PORT = 8081
     app.listen(PORT, () => {
-        console.log('Servidor rodando')
+        console.log('Server is running')
     })
