@@ -1,4 +1,4 @@
-//CARREGANDO MODULOS
+
     import express from "express";
     import { engine } from 'express-handlebars';
     import bodyParser from 'body-parser';
@@ -11,7 +11,7 @@
     const app = express()
 
 
-//CONFIGURAÇÕES
+//CONFIGs
 
     //sessão
         app.use(session({
@@ -58,14 +58,11 @@
         const __dirname = path.dirname(__filename);
         app.use(express.static(path.join(__dirname, 'public')));
 
-    //outras configs
 
-//ROTAS
+//ROUTES
     app.use('/admin', admin)
 
 
-
-//OUTROS
     const PORT = 8081
     app.listen(PORT, () => {
         console.log('Server is running')

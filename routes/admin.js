@@ -14,7 +14,11 @@ router.get('/posts', (req, res) => {
 })
 
 router.get('/categorias', (req, res) => {
-    res.render('admin/categorias')
+    categoria.find().sort({date: 'desc'}).then((categoria) => {
+        res.render('admin/categorias', {categoria: categoria})
+    }).catch((error) => {
+        console.log('Erro ao listar categorias' + ero)
+    })
 })
 
 router.get('/categorias/add', (req, res) => {
