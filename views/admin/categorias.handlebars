@@ -11,9 +11,13 @@
         <small>data: {{date}}</small><br>
         <a href="/admin/categorias/edit/{{_id}}"><button class="btn btn-success mt-4">Editar categoria</button></a>
         <br>
+        <form action="/admin/categorias/delete" method="post">
+            <input type="hidden" name="id" value="{{_id}}">
+            <button type="submit" class="btn btn-danger mt-4">Deletar</button>
+        </form>
     </div>
 </div>
 
 {{else}}
-
+<h4>Nenhuma Categoria disponivel</h4>
 {{/each}}
