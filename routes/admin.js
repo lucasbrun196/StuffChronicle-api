@@ -90,5 +90,18 @@ router.post('/categorias/delete', (req, res) => {
     }) 
 })
 
+router.get('/postagens', (req, res) => {
+    res.render('admin/postagens')
+})
+
+router.get('/postagens/add', (req, res) => {
+    categoria.find().then((categoria) => {
+        res.render('admin/addpostagem', {categoria: categoria})
+    }).catch((error) => {
+        req.flash('error_msg', 'Nenhuma categoria encontrada')
+    })
+    
+})
+
 
 export default router;
