@@ -1,7 +1,14 @@
+{{#each errors}}
+    <div class="alert alert-danger">
+        {{text}}
+    </div>
+{{else}}
+{{/each}}
+
 <div class="card">
     <h4>Nova postagem</h4>
     <div class="card-body">
-        <form action="" method="post">
+        <form action="/admin/postagens/nova" method="post">
             <label for="titulo">Titulo: </label>
             <input type="text" name="titulo" class="form-control">
             
@@ -18,7 +25,7 @@
                 {{#each categoria}}
                     <option value="{{_id}}">{{nome}}</option>
                 {{else}}
-                    <option value="">Nenhuma categoria registrada</option>
+                    <option value="0">Nenhuma categoria registrada</option>
                 {{/each}}
             </select>
             <button class="btn btn-success mt-4" type="submit">Criar postagem</button>

@@ -1,8 +1,10 @@
 import express from "express";
 import mongoose from "mongoose";
 import Categoria from '../models/Categoria.js';
+import Postagem from '../models/Postagem.js'
 
 const categoria = mongoose.model('categorias')
+const postagens = mongoose.model('postegens')
 const router = express.Router()
 
 router.get('/', (req, res) => {
@@ -101,6 +103,41 @@ router.get('/postagens/add', (req, res) => {
         req.flash('error_msg', 'Nenhuma categoria encontrada')
     })
     
+})
+
+router.post('/postagens/nova', (req, res) => {
+
+    var errors = []
+
+    for(var prop in req.body){
+        if(!req.body[prop] || req.body[prop] == undefined || req.body[prop] == null || req.body[prop] == '0'){
+            errors.push({text: `${prop} invalido`})
+        }
+    }
+    
+    if(errors.length > 0){
+        categoria.find().then((categoria) => {
+            res.render('admin/addpostagem', {errors: errors, categoria: categoria})
+        })
+        
+    }else{
+        const NewPost = {
+            titulo: req.body.titulo,
+            slug: req.body.slug,
+            descricao: req.body.descricao,
+            conteudo: req.body.conteudo,
+            categoria: req.body.categoria,
+        }
+        new postagens(NewPost).save().then(() => {
+            console.log('New post was created')
+            req.flash('success_msg', 'Postagem criada com sucesso')
+            res.redirect('/admin/postagens')
+        }).catch((error) => {
+            console.log('Error when created new post' + error)
+            req.flash('error_msg', 'Erro ao criar postagem')
+            res.redirect('/admin/postagens')
+        })
+    }
 })
 
 

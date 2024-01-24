@@ -30,3 +30,5 @@ const Postagem = new Schema({
 })
 
 mongoose.model('postegens', Postagem)
+
+export default Postagem
