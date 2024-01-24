@@ -93,7 +93,13 @@ router.post('/categorias/delete', (req, res) => {
 })
 
 router.get('/postagens', (req, res) => {
-    res.render('admin/postagens')
+    postagens.find().sort({date: 'desc'}).then((postagens) => {
+        res.render('admin/postagens', {postagens: postagens})
+    }).catch((error) => {
+        console.log('Error when show postagens' + error)
+        res.redirect('/admin')
+        req.flash('error_msg', 'Erro ao carregar postagens')
+    })
 })
 
 router.get('/postagens/add', (req, res) => {
@@ -139,6 +145,10 @@ router.post('/postagens/nova', (req, res) => {
         })
     }
 })
+
+
+
+
 
 
 export default router;
