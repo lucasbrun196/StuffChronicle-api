@@ -157,8 +157,32 @@ router.get('/postagens/edit/:id', (req, res) => {
 
     }).catch((error) => {
         req.flash('error_msg', 'Essa postagem não existe')
-        res.redirect('admin/postagens')
+        res.redirect('/admin/postagens')
     })
+})
+
+router.post('/postagens/edit', (req, res) => {
+    postagens.findOne({_id: req.body.id}).then((postagens) => {
+        postagens.titulo = req.body.titulo
+        postagens.slug = req.body.slug
+        postagens.descricao = req.body.descricao
+        postagens.conteudo = req.body.conteudo
+        postagens.categoria = req.body.categoria
+
+        postagens.save().then(() => {
+            req.flash('success_msg', 'Categoria editada com sucesso')
+            res.redirect('/admin/postagens')
+        }).catch((error) => {
+            req.flash('error_msg', 'Erro interno')
+            res.redirect('/admin/postagens')
+            console.log('internal saving error' + error)
+        })
+    }).catch((error) => {
+        req.flash('error_msg', 'Erro ao editar postagem')
+        res.redirect('/admin/postagens')
+        console.log('Error when edit post' + error)
+    })
+
 })
 
 
