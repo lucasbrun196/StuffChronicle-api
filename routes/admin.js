@@ -93,7 +93,7 @@ router.post('/categorias/delete', (req, res) => {
 })
 
 router.get('/postagens', (req, res) => {
-    postagens.find().sort({date: 'desc'}).then((postagens) => {
+    postagens.find().populate('categoria').sort({date: 'desc'}).then((postagens) => {
         res.render('admin/postagens', {postagens: postagens})
     }).catch((error) => {
         console.log('Error when show postagens' + error)
@@ -145,6 +145,23 @@ router.post('/postagens/nova', (req, res) => {
         })
     }
 })
+
+router.get('/postagens/edit/:id', (req, res) => {
+    postagens.findOne({_id: req.params.id}).then((postagens) => {
+        categoria.find().then((categoria) => {
+            res.render('admin/editpost', {categoria: categoria, postagens: postagens})
+        }).catch(() => {
+            req.flash('error_msg', 'Houve um erro ao carregar categorias')
+            res.redirect('/admin/postagens')
+        })
+
+    }).catch((error) => {
+        req.flash('error_msg', 'Essa postagem não existe')
+        res.redirect('admin/postagens')
+    })
+})
+
+
 
 
 
