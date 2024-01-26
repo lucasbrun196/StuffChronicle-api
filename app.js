@@ -75,6 +75,21 @@ app.get('/', (req, res) => {
     })
 })
 
+app.get('/postagem/:slug', (req, res) => {
+    postagens.findOne({slug: req.params.slug}).then((postagens) => {
+        if(postagens){
+            res.render('postagem/index', {postagens: postagens})
+        }else{
+            req.flash('error_msg', 'Postagem não encontrada')
+            res.redirect('/')
+        }
+    }).catch((error) => {
+        req.flash('error_msg', 'Houve um erro interno')
+        res.redirect('/')
+        console.log('Error when find this post by slug')
+    })
+})
+
 app.get('/404', (req, res) => {
     res.send('Erro 404')
 })
