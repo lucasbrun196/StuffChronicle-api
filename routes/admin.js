@@ -68,6 +68,7 @@ router.get('/categorias/edit/:id', (req, res) => {
 })
 
 router.post('/categorias/edit', (req, res) => {
+    
     categoria.findOne({_id:req.body.id}).then((categoria) => {
         categoria.nome = req.body.nome
         categoria.slug = req.body.slug
@@ -182,7 +183,15 @@ router.post('/postagens/edit', (req, res) => {
         res.redirect('/admin/postagens')
         console.log('Error when edit post' + error)
     })
+})
 
+router.post('/postagens/delete', (req, res) => {
+    postagens.deleteOne({_id: req.body.id}).then(() => {
+        req.flash('success_msg', 'Postagem excluida com sucesso')
+        res.redirect('/admin/postagens')
+    }).catch((error) => {
+        console.log('Error when delete a posting')
+    })
 })
 
 
@@ -191,5 +200,13 @@ router.post('/postagens/edit', (req, res) => {
 
 
 
-
 export default router;
+
+
+
+
+
+
+
+
+
