@@ -10,10 +10,14 @@
     import flash from 'connect-flash';
     import router from "./routes/admin.js";
     import Postagem from './models/Postagem.js'
+    import Categoria from './models/Categoria.js';
+
+
 
 
     const app = express()
     const postagens = mongoose.model('postegens')
+    const categoria = mongoose.model('categorias')
 
 
 //CONFIGs
@@ -86,7 +90,42 @@ app.get('/postagem/:slug', (req, res) => {
     }).catch((error) => {
         req.flash('error_msg', 'Houve um erro interno')
         res.redirect('/')
-        console.log('Error when find this post by slug')
+        console.log('Error when find this post by slug' + error)
+    })
+})
+
+app.get('/categoria', (req, res) => {
+    categoria.find().then((categoria) => {
+        if(categoria != null){
+            res.render('categoria/index', {categoria: categoria})
+        }else{
+            req.flash('error_msg', 'Nenhuma categoria disponivel')
+            req.redirect('/')
+        }
+    }).catch((error) => {
+        req.flash('error_msg', 'Houve um erro interno')
+        res.redirect('/')
+        console.log('Error when find the categorys' + error)
+    })
+})
+
+app.get('/categoria/:slug', (req, res) => {
+    categoria.findOne({slug: req.params.slug}).then((categoria) => {
+        if(categoria){
+            postagens.find({categoria: categoria._id}).then((postagens) => {
+                res.render('categoria/category_route', {postagens: postagens, categoria: categoria})
+            }).catch((error) => {
+                req.flash('error_msg', 'Erro ao achar postagem por esse slug')
+                res.redirect('/')
+                console.log('Post not found by this category' + error)
+            })
+        }else{
+            req.flash('error_msg', 'Essa categoria não existe')
+        }
+    }).catch((error) => {
+        req.flash('error_msg', 'Houve um erro interno')
+        res.redirect('/')
+        console.log('Error when find category by slug' + error)
     })
 })
 

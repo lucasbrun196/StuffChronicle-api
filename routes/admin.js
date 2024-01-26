@@ -1,7 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
-import Categoria from '../models/Categoria.js';
 import Postagem from '../models/Postagem.js'
+import Categoria from '../models/Categoria.js';
 
 const categoria = mongoose.model('categorias')
 const postagens = mongoose.model('postegens')
