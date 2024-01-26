@@ -7,13 +7,7 @@ const categoria = mongoose.model('categorias')
 const postagens = mongoose.model('postegens')
 const router = express.Router()
 
-router.get('/', (req, res) => {
-    res.render('admin/index')
-})
 
-router.get('/posts', (req, res) => {
-    res.send('Pagina de posts')
-})
 
 router.get('/categorias', (req, res) => {
     categoria.find().sort({date: 'desc'}).then((categoria) => {

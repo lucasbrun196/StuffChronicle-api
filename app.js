@@ -8,7 +8,12 @@
     import mongoose from "mongoose";
     import session from "express-session";
     import flash from 'connect-flash';
+    import router from "./routes/admin.js";
+    import Postagem from './models/Postagem.js'
+
+
     const app = express()
+    const postagens = mongoose.model('postegens')
 
 
 //CONFIGs
@@ -60,6 +65,26 @@
 
 
 //ROUTES
+app.get('/', (req, res) => {
+    postagens.find().populate('categoria').sort({date: 'desc'}).then((postagens) => {
+        res.render('index', {postagens: postagens})
+    }).catch((error) => {
+        req.flash('error_msg', 'Houve um erro interno')
+        console.log('Internal error in root' + error)
+        res.redirect('/404')
+    })
+})
+
+app.get('/404', (req, res) => {
+    res.send('Erro 404')
+})
+
+app.get('/posts', (req, res) => {
+    res.send('Pagina de posts')
+})
+
+
+
     app.use('/admin', admin)
 
 
