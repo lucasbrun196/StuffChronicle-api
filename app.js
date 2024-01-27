@@ -3,6 +3,7 @@
     import { engine } from 'express-handlebars';
     import bodyParser from 'body-parser';
     import admin from './routes/admin.js';
+    import usuario from './routes/usuario.js'
     import path from 'path'
     import { fileURLToPath } from 'url';
     import mongoose from "mongoose";
@@ -11,6 +12,7 @@
     import router from "./routes/admin.js";
     import Postagem from './models/Postagem.js'
     import Categoria from './models/Categoria.js';
+    import Usuario from "./models/Usuario.js";
 
 
 
@@ -139,7 +141,9 @@ app.get('/posts', (req, res) => {
 
 
 
-    app.use('/admin', admin)
+app.use('/admin', admin)
+
+app.use('/usuarios', usuario)
 
 
     const PORT = 8081
