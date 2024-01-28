@@ -6,7 +6,7 @@ import Usuario from "../models/Usuario.js";
 // const Usuario = mongoose.model('usuarios')
 
 export default function(passport){
-    passport.use(new localStrategy({ usernameField: 'email' }, (email, senha, done) => {
+    passport.use(new localStrategy({ usernameField: 'email', passwordField: 'senha' }, (email, senha, done) => {
         Usuario.findOne({ email: email }).then((usuario) => {
             if (!usuario) {
                 return done(null, false, { message: 'Essa conta não existe' });
@@ -29,9 +29,12 @@ export default function(passport){
     });
 
     passport.deserializeUser((id, done) => {
-        Usuario.findById(id, (error, usuario) => {
-            done(error, usuario);
-        });
+        Usuario.findById(id).then((usuario) => {
+            done(null, usuario)
+        }).catch((error) => {
+            done(error, null)
+            console.log('Error in the deserializerUser ' + error)
+        })
     });
 }
     
