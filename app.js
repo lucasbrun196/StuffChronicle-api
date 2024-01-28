@@ -13,6 +13,10 @@
     import Postagem from './models/Postagem.js'
     import Categoria from './models/Categoria.js';
     import Usuario from "./models/Usuario.js";
+    import passport from 'passport';
+    import initializePassport from './config/auth.js';
+    initializePassport(passport)
+
 
 
 
@@ -30,6 +34,9 @@
             resave: true,
             saveUninitialized: true
         }))
+
+        app.use(passport.initialize())
+        app.use(passport.session())
     
     //flash
         app.use(flash())
